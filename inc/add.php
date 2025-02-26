@@ -29,17 +29,23 @@ if ($confirm == 'Envoyer') {
     $actors = array_map('trim', explode(',', $actors));
 
     $errors = [];
-    if (empty($title)) $errors[] = "Le titre du film est requis.";
-    if (empty($year) || !is_numeric($year)) $errors[] = "L'année de sortie du film doit etre un nombre et requise.";
-    if (empty($realisateurs)) $errors[] = "Les réalisateurs sont requis.";
-    if (empty($production)) $errors[] = "Les producteurs sont requis.";
-    if (empty($actors)) $errors[] = "Les acteurs principaux sont requis.";
-    if (empty($synopsis)) $errors[] = "Le synopsis est requis.";
+    if (empty($title))
+        $errors[] = "Le titre du film est requis.";
+    if (empty($year) || !is_numeric($year))
+        $errors[] = "L'année de sortie du film doit etre un nombre et requise.";
+    if (empty($realisateurs))
+        $errors[] = "Les réalisateurs sont requis.";
+    if (empty($production))
+        $errors[] = "Les producteurs sont requis.";
+    if (empty($actors))
+        $errors[] = "Les acteurs principaux sont requis.";
+    if (empty($synopsis))
+        $errors[] = "Le synopsis est requis.";
 
     if (empty($errors)) {
-        $new_movie = [
+        $movieNew = [
             'title' => $title,
-            'year' => (int)$year,
+            'year' => (int) $year,
             'realisateurs' => $realisateurs,
             'production' => $production,
             'actors' => $actors,
@@ -47,7 +53,7 @@ if ($confirm == 'Envoyer') {
         ];
 
         try {
-            $movies_collection->insertOne($new_movie);
+            $movies_collection->insertOne($movieNew);
             header('Location: index.php');
             exit();
         } catch (Exception $e) {
@@ -97,15 +103,16 @@ if ($confirm == 'Envoyer') {
         <textarea class="w3-input w3-border" id="synopsis" name="synopsis"></textarea>
         <br />
         <div class="w3-row-padding">
-                <div class="w3-half">
-                    <input class="w3-btn w3-red" type="submit" name="cancel" value="Annuler" />
-                </div>
-                <div class="w3-half">
-                    <input class="w3-btn w3-blue-grey" type="submit" name="confirm_envoyer" value="Envoyer" />
-                </div>
+            <div class="w3-half">
+                <input class="w3-btn w3-red" type="submit" name="cancel" value="Annuler" />
+            </div>
+            <div class="w3-half">
+                <input class="w3-btn w3-blue-grey" type="submit" name="confirm_envoyer" value="Envoyer" />
+            </div>
         </div>
         <br /><br />
 </form>
 </div>
 <div class="dfooter">
-</div></di
+</div>
+</di

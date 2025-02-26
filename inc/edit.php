@@ -7,11 +7,11 @@ $mdb = new myDbClass();
 $client = $mdb->getClient();
 $id = GETPOST('id');
 if ($id == '') {
-?>
+    ?>
     <div class="dtitle w3-container w3-teal">
         <h2>Cet élément n'a pas été trouvé</h2>
     </div>
-<?php
+    <?php
 } else {
     $obj_id = new MongoDB\BSON\ObjectId($id);
     $movies_collection = $mdb->getCollection('movies');
@@ -40,14 +40,61 @@ if ($id == '') {
 
     $confirm = GETPOST('confirm_envoyer');
     if ($confirm == 'Envoyer') {
+        /** 
+         * A implémenter : 
+         * Récupérer les données transmises par le formulaire 
+         * Les envoyer pour mettre à jour l'enregistrement correspondant dans votre base MongoDB 
+         * Si c'est OK : On retourne à la liste, 
+         * Si il y a eu une erreur, On reste sur la page d'édition 
+         **/
 
-        /**
-         *  A implémenter : 
-         * Récupérer les données transmises par le formulaire
-         * Les envoyer pour mettre à jour l'enregistrement correspondant dans votre base MongoDB
-         * Si c'est OK : On retourne à la liste,
-         * Si il y a eu une erreur, On reste sur la page d'édition
-         * */
+        $title = $_POST['title'] ?? '';
+        $year = $_POST['year'] ?? '';
+        $realisateurs = $_POST['realisateurs'] ?? '';
+        $production = $_POST['production'] ?? '';
+        $actors = $_POST['actors'] ?? '';
+        $synopsis = $_POST['synopsis'] ?? '';
+
+        $realisateurs = array_map('trim', explode(',', $realisateurs));
+        $production = array_map('trim', explode(',', $production));
+        $actors = array_map('trim', explode(',', $actors));
+
+        $errors = [];
+        if (empty($title))
+            $errors[] = "Le titre du film est requis.";
+        if (empty($year) || !is_numeric($year))
+            $errors[] = "L'année de sortie du film doit etre un nombre et requise.";
+        if (empty($realisateurs))
+            $errors[] = "Les réalisateurs sont requis.";
+        if (empty($production))
+            $errors[] = "Les producteurs sont requis.";
+        if (empty($actors))
+            $errors[] = "Les acteurs principaux sont requis.";
+        if (empty($synopsis))
+            $errors[] = "Le synopsis est requis.";
+
+        if (empty($errors)) {
+            $movieUpdate = [
+                'title' => $title,
+                'year' => (int) $year,
+                'realisateurs' => $realisateurs,
+                'production' => $production,
+                'actors' => $actors,
+                'synopsis' => $synopsis,
+            ];
+
+            try {
+                $movies_collection->updateOne(['_id' => $obj_id], ['$set' => $movieUpdate]);
+                header('Location: index.php');
+                exit();
+            } catch (Exception $e) {
+                echo 'Erreur : ' . $e->getMessage();
+            }
+        } else {
+            foreach ($errors as $error) {
+                echo '<p style="color:red;">' . htmlspecialchars($error) . '</p>';
+            }
+        }
 
         exit(0);
     }
