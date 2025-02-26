@@ -85,7 +85,7 @@ if ($id == '') {
 
             try {
                 $movies_collection->updateOne(['_id' => $obj_id], ['$set' => $movieUpdate]);
-                header('Location: index.php');
+                header('Location: index.php?action=list');
                 exit();
             } catch (Exception $e) {
                 echo 'Erreur : ' . $e->getMessage();

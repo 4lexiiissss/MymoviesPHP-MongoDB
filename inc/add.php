@@ -24,6 +24,7 @@ if ($confirm == 'Envoyer') {
     $actors = $_POST['actors'] ?? '';
     $synopsis = $_POST['synopsis'] ?? '';
 
+    // permet de récupérer chaque champs grace a la virgule et de les mettre dans un tableau
     $realisateurs = array_map('trim', explode(',', $realisateurs));
     $production = array_map('trim', explode(',', $production));
     $actors = array_map('trim', explode(',', $actors));
@@ -54,7 +55,7 @@ if ($confirm == 'Envoyer') {
 
         try {
             $movies_collection->insertOne($movieNew);
-            header('Location: index.php');
+            header('Location: index.php?action=list');
             exit();
         } catch (Exception $e) {
             echo 'Erreur : ' . $e->getMessage();

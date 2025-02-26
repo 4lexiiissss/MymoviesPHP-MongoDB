@@ -18,7 +18,6 @@ function GETPOSTISSET($paramname)
     return (isset($_POST[$paramname]) || isset($_GET[$paramname]));
 }
 
-
 function print_tr_movie($document, $cols)
 {
     $elt = secure_document($document, $cols);
@@ -42,7 +41,7 @@ function print_tr_movie($document, $cols)
 <?php
     }
     print '<td>';
-    echo '<a href="index.php?action=delete&id=' . $elt[$key] . '">';
+    echo '<a href="index.php?action=delete&id=' . $elt['_id'] . '">';
     echo '<i class="fas fa-trash w3-hover-opacity" aria-hidden="true"></i>';
     echo '</a>';
     print '</td>';
